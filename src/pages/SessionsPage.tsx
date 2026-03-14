@@ -1,3 +1,9 @@
+import { Layout } from '@/components/Layout';
+
 export function SessionsPage() {
-    return <div>Sessions</div>;
+    return (
+        <Layout title="Sessões">
+            <div>Em construção...</div>
+        </Layout>
+    );
 }

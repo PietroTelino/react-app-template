@@ -1,3 +1,9 @@
+import { Layout } from '@/components/Layout';
+
 export function ProfilePage() {
-    return <div>Profile</div>;
+    return (
+        <Layout title='Perfil'>
+            <div>Em construção...</div>
+        </Layout>
+    );
 }

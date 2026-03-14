@@ -1,3 +1,9 @@
+import { Layout } from '@/components/Layout';
+
 export function AuditPage() {
-    return <div>Audit</div>;
+    return (
+        <Layout title="Auditoria">
+            <div>Em construção...</div>
+        </Layout>
+    );
 }
