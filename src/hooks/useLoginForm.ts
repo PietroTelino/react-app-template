@@ -42,7 +42,7 @@ export function useLoginForm() {
             newErrors.email = 'E-mail inválido';
         }
 
-        if (!form.password) {
+        if (!password) {
             newErrors.password = 'Senha é obrigatória';
         }
 
