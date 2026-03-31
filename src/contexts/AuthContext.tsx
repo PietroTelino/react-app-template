@@ -3,12 +3,12 @@ import { login as loginRequest, logout as logoutRequest } from '@/api/auth';
 import type { User } from '@/types';
 
 interface AuthContextData {
-    user: User | null,
-    accessToken: string | null,
-    isAuthenticated: boolean,
-    isLoading: boolean,
-    login: (email: string, password: string) => Promise<void>,
-    logout: () => Promise<void>,
+    user: User | null;
+    accessToken: string | null;
+    isAuthenticated: boolean;
+    isLoading: boolean;
+    login: (email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData | null>(null);

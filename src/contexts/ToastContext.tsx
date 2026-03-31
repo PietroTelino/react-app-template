@@ -3,9 +3,9 @@ import { createContext, useContext, useState, useCallback } from 'react';
 type ToastType = 'success' | 'error' | 'warning' | 'info';
 
 interface Toast {
-    id: number,
-    message: string,
-    type: ToastType,
+    id: number;
+    message: string;
+    type: ToastType;
 }
 
 interface ToastContextData {

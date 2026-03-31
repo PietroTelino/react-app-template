@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface HeaderProps {
-    title: string,
+    title: string;
 }
 
 export function Header({ title }: HeaderProps) {

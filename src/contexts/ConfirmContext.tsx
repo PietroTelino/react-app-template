@@ -1,11 +1,11 @@
 import { createContext, useContext, useState } from 'react';
 
 interface ConfirmOptions {
-    title: string,
-    message: string,
-    confirmLabel?: string,
-    cancelLabel?: string,
-    variant?: 'danger' | 'warning' | 'info',
+    title: string;
+    message: string;
+    confirmLabel?: string;
+    cancelLabel?: string;
+    variant?: 'danger' | 'warning' | 'info';
 }
 
 interface ConfirmContextData {

@@ -1,8 +1,8 @@
 import type { Session } from '@/types';
 
 interface SessionCardProps {
-    session: Session,
-    onLogout: (id: string) => void,
+    session: Session;
+    onLogout: (id: string) => void;
 }
 
 function parseUserAgent(userAgent: string | null): string {

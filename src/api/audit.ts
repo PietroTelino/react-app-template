@@ -2,12 +2,12 @@ import { api } from './client';
 import type { AuditLog, PaginatedResponse } from '@/types';
 
 interface AuditFilters {
-    userId?: string,
-    performedById?: string,
-    action?: string,
-    entity?: string,
-    limit?: number,
-    offset?: number,
+    userId?: string;
+    performedById?: string;
+    action?: string;
+    entity?: string;
+    limit?: number;
+    offset?: number;
 }
 
 export async function getAuditLogs(

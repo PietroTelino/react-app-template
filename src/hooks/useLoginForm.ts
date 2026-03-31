@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface FormState {
-    email: string,
-    password: string,
+    email: string;
+    password: string;
 }
 
 interface FormErrors {
-    email?: string,
-    password?: string,
-    general?: string,
+    email?: string;
+    password?: string;
+    general?: string;
 }
 
 export function useLoginForm() {

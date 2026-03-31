@@ -3,8 +3,8 @@ import { Header } from './Header';
 import type React from 'react';
 
 interface LayoutProps {
-    title: string,
-    children: React.ReactNode,
+    title: string;
+    children: React.ReactNode;
 }
 
 export function Layout({ title, children }: LayoutProps) {

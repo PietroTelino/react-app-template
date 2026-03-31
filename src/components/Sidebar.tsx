@@ -2,9 +2,9 @@ import { NavLink } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface NavItem {
-    label: string,
-    path: string,
-    roles?: Array<'user' | 'administrator' | 'god'>,
+    label: string;
+    path: string;
+    roles?: Array<'user' | 'administrator' | 'god'>;
 }
 
 const navItems: NavItem[] = [

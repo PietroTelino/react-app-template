@@ -1,7 +1,7 @@
 import type { User } from '@/types';
 
 interface StatusBadgeProps {
-    user: Pick<User, 'deletedAt' | 'inactivatedAt'>,
+    user: Pick<User, 'deletedAt' | 'inactivatedAt'>;
 }
 
 export function StatusBadge({ user }: StatusBadgeProps) {
