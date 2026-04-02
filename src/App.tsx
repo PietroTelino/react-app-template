@@ -7,11 +7,15 @@ import { UsersPage } from '@/pages/UsersPage';
 import { AuditPage } from '@/pages/AuditPage';
 import { SessionsPage } from '@/pages/SessionsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage';
+import { ResetPasswordPage } from '@/pages/ResetPasswordPage';
 
 export default function App() {
     return (
         <Routes>
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} /> 
 
             <Route element={<PrivateRoute />}>
                 <Route path="/dashboard" element={<DashboardPage />} />

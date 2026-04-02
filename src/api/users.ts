@@ -82,3 +82,11 @@ export async function reactivateUser(id: string): Promise<void> {
 export async function adminResetPassword(id: string): Promise<void> {
     await api.post(`/users/${id}/reset-password`);
 }
+
+export async function forgotPassword(email: string): Promise<void> {
+    await api.post('/password-reset/request', { email });
+}
+
+export async function resetPassword(token: string, password: string): Promise<void> {
+    await api.post('/password-reset/confirm', { token, password });
+}
