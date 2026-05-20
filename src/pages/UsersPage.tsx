@@ -14,7 +14,7 @@ export function UsersPage() {
     return (
         <Layout title="Usuários">
             <div className='flex flex-col gap-6'>
-                <div className='flex gap-1 bg-gray-100 p-1 rounded-lg w-fit'>
+                <div className='flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg w-fit'>
                     {([
                         { key: 'active', label: 'Ativos' },
                         { key: 'deleted', label: 'Deletados' },
@@ -25,8 +25,8 @@ export function UsersPage() {
                             className={`
                                 px-4 py-1.5 rounded-md text-sm font-medium transition-colors
                                 ${activeTab === tab.key
-                                    ? 'bg-white text-gray-900 shadow-sm'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                    ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm'
+                                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                                 }
                             `}
                         >

@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/contexts/ToastContext';
 
 export function usePreferences() {
-    const { user } = useAuth();
+    const { user, applyTheme, updateUser } = useAuth();
     const { showToast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const currentTheme = (user?.preferences as any)?.theme ?? 'light';
@@ -14,9 +14,15 @@ export function usePreferences() {
         setIsSubmitting(true);
         try {
             await updateMyPreferences(theme);
-            showToast('Preferências atualizadas', 'success');
+            applyTheme(theme);
+
+            updateUser({
+                preferences: { ...user?.preferences, theme },
+            });
+
+            showToast('Tema atualizado com sucesso', 'success');
         } catch {
-            showToast('Erro ao atualizar preferências', 'error');
+            showToast('Erro ao atualizar tema', 'error');
         } finally {
             setIsSubmitting(false);
         }

@@ -49,8 +49,8 @@ export function AuditPage() {
         <Layout title="Auditoria">
             <div className='flex flex-col gap-6'>
                 <div>
-                    <h2 className='text-lg font-semibold text-gray-900'>Logs de auditoria</h2>
-                    <p className='text-sm text-gray-500 mt-0.5'>
+                    <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>Logs de auditoria</h2>
+                    <p className='text-sm text-gray-500 dark:text-gray-400 mt-0.5'>
                         {total} registro{total !== 1 ? 's' : ''} encontrado{total !== 1 ? 's' : ''}
                     </p>
                 </div>
@@ -59,7 +59,7 @@ export function AuditPage() {
                         name='action'
                         value={filters.action}
                         onChange={handleFilterChange}
-                        className='text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 outline-none focus:border-blue-500'
+                        className='text-sm border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 outline-none focus:border-blue-500'
                     >
                         {ACTION_OPTIONS.map((opt) => (
                             <option key={opt.value} value={opt.value}>
@@ -71,7 +71,7 @@ export function AuditPage() {
                         name='entity'
                         value={filters.entity}
                         onChange={handleFilterChange}
-                        className='text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 outline-none focus:border-blue-500'
+                        className='text-sm border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 outline-none focus:border-blue-500'
                     >
                         {ENTITY_OPTIONS.map((opt) => (
                             <option key={opt.value} value={opt.value}>
@@ -82,68 +82,68 @@ export function AuditPage() {
                     {hasFilters && (
                         <button
                             onClick={handleClearFilters}
-                            className='text-sm text-gray-500 hover:text-gray-700 hover:underline'
+                            className='text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:underline'
                         >
                             Limpar filtros
                         </button>
                     )}
                 </div>
                 {isLoading && (
-                    <div className='text-sm text-gray-500'>Carregando logs...</div>
+                    <div className='text-sm text-gray-500 dark:text-gray-400'>Carregando logs...</div>
                 )}
                 {error && (
-                    <div className='px-4 py-3 bg-red-50 border border-red-200 rounded-lg'>
-                        <p className='text-sm text-red-600'>{error}</p>
+                    <div className='px-4 py-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg'>
+                        <p className='text-sm text-red-600 dark:text-red-400'>{error}</p>
                     </div>
                 )}
 
                 {!isLoading && !error && (
                     <div className='flex flex-col gap-4'>
-                        <div className='bg-white border border-gray-200 rounded-xl overflow-hidden'>
+                        <div className='bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden'>
                             <table className='w-full text-sm'>
                                 <thead>
-                                    <tr className='border-b border-gray-200 bg-gray-50'>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">Data</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">Ação</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">Entidade</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">Usuário</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">Realizado por</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">IP</th>
+                                    <tr className='border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800'>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Data</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Ação</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Entidade</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Usuário</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Realizado por</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">IP</th>
                                     </tr>
                                 </thead>
-                                <tbody className='divide-y divide-gray-100'>
+                                <tbody className='divide-y divide-gray-100 dark:divide-gray-800'>
                                     {logs.map((log) => (
-                                        <tr key={log.id} className='hover:bg-gray-50 transition-colors'>
-                                            <td className='px-4 py-3 text-gray-500 whitespace-nowrap'>
+                                        <tr key={log.id} className='hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors'>
+                                            <td className='px-4 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap'>
                                                 {new Date(log.createdAt).toLocaleString('pt-BR')}
                                             </td>
                                             <td className='px-4 py-3'>
-                                                <span className='px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs font-mono'>
+                                                <span className='px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded text-xs font-mono'>
                                                     {log.action}
                                                 </span>
                                             </td>
-                                            <td className='px-4 py-3 text-gray-600'>{log.entity}</td>
-                                            <td className='px-4 py-3 text-gray-600'>
+                                            <td className='px-4 py-3 text-gray-600 dark:text-gray-400'>{log.entity}</td>
+                                            <td className='px-4 py-3'>
                                                 {log.user ? (
                                                     <div className='flex flex-col'>
-                                                        <span className='font-medium text-gray-800'>{log.user.name}</span>
-                                                        <span className='text-xs text-gray-400'>{log.user.email}</span>
+                                                        <span className='font-medium text-gray-800 dark:text-gray-200'>{log.user.name}</span>
+                                                        <span className='text-xs text-gray-400 dark:text-gray-500'>{log.user.email}</span>
                                                     </div>
                                                 ) : (
-                                                    <span className='text-gray-400'>-</span>
+                                                    <span className='text-gray-400'>—</span>
                                                 )}
                                             </td>
                                             <td className='px-4 py-3 text-gray-600'>
                                                 {log.performedBy ? (
                                                     <div className='flex flex-col'>
-                                                        <span className='font-medium text-gray-800'>{log.performedBy.name}</span>
-                                                        <span className='text-xs text-gray-400'>{log.performedBy.email}</span>
+                                                        <span className='font-medium text-gray-800 dark:text-gray-200'>{log.performedBy.name}</span>
+                                                        <span className='text-xs text-gray-400 dark:text-gray-500'>{log.performedBy.email}</span>
                                                     </div>
                                                 ) : (
-                                                    <span className='text-gray-400'>-</span>
+                                                    <span className='text-gray-400'>—</span>
                                                 )}
                                             </td>
-                                            <td className='px-4 py-3 text-gray-500 font-mono text-xs'>
+                                            <td className='px-4 py-3 text-gray-500 dark:text-gray-400 font-mono text-xs'>
                                                 {log.ipAddress ?? '—'}
                                             </td>
                                         </tr>
@@ -151,7 +151,7 @@ export function AuditPage() {
                                 </tbody>
                             </table>
                             {logs.length === 0 && (
-                                <div className='px-4 py-8 text-center text-sm text-gray-400'>
+                                <div className='px-4 py-8 text-center text-sm text-gray-400 dark:text-gray-500'>
                                     Nenhum log encontrado
                                 </div>
                             )}

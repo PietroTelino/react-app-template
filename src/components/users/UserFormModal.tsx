@@ -104,88 +104,56 @@ export function UserFormModal({ isOpen, editingUser, onClose, onCreate, onEdit }
     return (
         <div className='fixed inset-0 z-50 flex items-center justify-center'>
             <div className='absolute inset-0 bg-black/40' onClick={onClose} />
-            <div className='relative bg-white rounded-2xl shadow-lg w-full max-w-md mx-4 p-6 flex flex-col gap-5'>
+            <div className='relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-lg w-full max-w-md mx-4 p-6 flex flex-col gap-5'>
                 <div className='flex items-center justify-between'>
-                    <h2 className='text-base font-semibold text-gray-900'>
+                    <h2 className='text-base font-semibold text-gray-900 dark:text-white'>
                         {isEditing ? 'Editar usuário' : 'Novo usuário'}
                     </h2>
                     <button
                         onClick={onClose}
-                        className='text-gray-400 hover:text-gray-600 transition-colors text-lg'
+                        className='text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors text-lg'
                     >
                         ✕
                     </button>
                 </div>
                 <form onSubmit={handleSubmit} noValidate className='flex flex-col gap-4'>
-                    <div className='flex flex-col gap-1.5'>
-                        <label className='text-sm font-medium text-gray-700'>Nome</label>
+                    {[
+                        { name: 'name', label: 'Nome', type: 'text', placeholder: 'Nome completo' },
+                        { name: 'email', label: 'E-mail', type: 'email', placeholder: 'email@exemplo.com' },
+                        ...(!isEditing ? [{ name: 'password', label: 'Senha', type: 'password', placeholder: '••••••••' }] : []),
+                    ].map((field) => (
+                        <div key={field.name} className='flex flex-col gap-1.5'>
+                        <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>{field.label}</label>
                         <input
-                            name='name'
-                            type='text'
-                            value={form.name}
+                            name={field.name}
+                            type={field.type}
+                            value={form[field.name as keyof FormState]}
                             onChange={handleChange}
-                            placeholder='Nome completo'
+                            placeholder={field.placeholder}
                             className={`
                                 w-full px-3 py-2.5 rounded-lg border text-sm outline-none transition-colors
-                                placeholder:text-gray-400 text-gray-900
-                                ${errors.name
-                                    ? 'border-red-400 bg-red-50'
-                                    : 'border-gray-300 focus:border-blue-500'
+                                placeholder:text-gray-400 dark:placeholder:text-gray-600
+                                text-gray-900 dark:text-white
+                                ${errors[field.name as keyof FormErrors]
+                                    ? 'border-red-400 bg-red-50 dark:bg-red-950'
+                                    : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:border-blue-500'
                                 }
                             `}
                         />
-                        {errors.name && <p className='text-xs text-red-500'>{errors.name}</p>}
-                    </div>
-                    <div className='flex flex-col gap-1.5'>
-                        <label className='text-sm font-medium text-gray-700'>E-mail</label>
-                        <input
-                            name='email'
-                            type='email'
-                            value={form.email}
-                            onChange={handleChange}
-                            placeholder='email@exemplo.com'
-                            className={`
-                                w-full px-3 py-2.5 rounded-lg border text-sm outline-none transition-colors
-                                placeholder:text-gray-400 text-gray-900
-                                ${errors.email
-                                    ? 'border-red-400 bg-red-50'
-                                    : 'border-gray-300 focus:border-blue-500'
-                                }
-                            `}
-                        />
-                        {errors.email && <p className='text-xs text-red-500'>{errors.email}</p>}
-                    </div>
-
-                    {!isEditing && (
-                        <div className='flex flex-col gap-1.5'>
-                            <label className='text-sm font-medium text-gray-700'>Senha</label>
-                            <input
-                                name='password'
-                                type='password'
-                                value={form.password}
-                                onChange={handleChange}
-                                placeholder='••••••••'
-                                className={`
-                                    w-full px-3 py-2.5 rounded-lg border text-sm outline-none transition-colors
-                                    placeholder:text-gray-400 text-gray-900
-                                    ${errors.password
-                                        ? 'border-red-400 bg-red-50'
-                                        : 'border-gray-300 focus:border-blue-500'
-                                    }
-                                `}
-                            />
-                            {errors.password && <p className='text-xs text-red-500'>{errors.password}</p>}
+                        {errors[field.name as keyof FormErrors] && (
+                            <p className='text-xs text-red-500'>{errors[field.name as keyof FormErrors]}</p>
+                        )}
                         </div>
-                    )}
+                    ))}
 
                     {!isEditing && (
                         <div className='flex flex-col gap-1.5'>
-                            <label className='text-sm font-medium text-gray-700'>Perfil</label>
+                            <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>Perfil</label>
                             <select
                                 name='role'
                                 value={form.role}
                                 onChange={handleChange}
-                                className='w-full px-3 py-2.5 rounded-lg border border-gray-300 text-sm outline-none focus:border-blue-500 text-gray-900 bg-white'
+                                className='w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 text-sm outline-none focus:border-blue-500 text-gray-900 dark:text-white bg-white dark:bg-gray-800'
                             >
                                 <option value='user'>Usuário</option>
                                 <option value='administrator'>Administrador</option>
@@ -197,7 +165,7 @@ export function UserFormModal({ isOpen, editingUser, onClose, onCreate, onEdit }
                         <button
                             type='button'
                             onClick={onClose}
-                            className='px-4 py-2 text-sm rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors'
+                            className='px-4 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors'
                         >
                             Cancelar
                         </button>
@@ -206,10 +174,7 @@ export function UserFormModal({ isOpen, editingUser, onClose, onCreate, onEdit }
                             disabled={isSubmitting}
                             className='px-4 py-2 text-sm rounded-lg bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white transition-colors'
                         >
-                            {isSubmitting
-                                ? 'Salvando...'
-                                : isEditing ? 'Salvar alterações' : 'Criar usuário'
-                            }
+                            {isSubmitting ? 'Salvando...' : isEditing ? 'Salvar alterações' : 'Criar usuário'}
                         </button>
                     </div>
                 </form>

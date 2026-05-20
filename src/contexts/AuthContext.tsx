@@ -9,9 +9,19 @@ interface AuthContextData {
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    applyTheme: (theme: 'light' | 'dark') => void;
+    updateUser: (updated: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextData | null>(null);
+
+function applyTheme(theme: 'light' | 'dark') {
+    if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
@@ -23,8 +33,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const storedUser = localStorage.getItem('user');
 
         if (storedToken && storedUser) {
+            const parsedUser: User = JSON.parse(storedUser);
             setAccessToken(storedToken);
             setUser(JSON.parse(storedUser));
+
+            const theme = parsedUser.preferences?.theme ?? 'light';
+            applyTheme(theme);
         }
 
         setIsLoading(false);
@@ -39,6 +53,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         setAccessToken(data.accessToken);
         setUser(data.user);
+
+        const theme = data.user.preferences?.theme ?? 'light';
+        applyTheme(theme);
     }
 
     async function logout() {
@@ -58,6 +75,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         setAccessToken(null);
         setUser(null);
+
+        applyTheme('light');
+    }
+
+    async function updateUser(updated: Partial<User>) {
+        setUser((prev) => {
+            if (!prev) return prev;
+            const newUser = { ...prev, ...updated };
+            localStorage.setItem('user', JSON.stringify(newUser));
+            return newUser;
+        })
     }
     
     return (
@@ -69,6 +97,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 isLoading,
                 login,
                 logout,
+                applyTheme,
+                updateUser,
             }}
         >
             {children}
