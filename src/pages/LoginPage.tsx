@@ -1,4 +1,5 @@
 import { useLoginForm } from '@/hooks/useLoginForm';
+import { Link } from 'react-router-dom';
 
 export function LoginPage() {
     const { form, errors, isSubmitting, handleChange, handleSubmit } = useLoginForm();
@@ -90,6 +91,12 @@ export function LoginPage() {
                     >
                         {isSubmitting ? 'Entrando...' : 'Entrar'}
                     </button>
+                    <p className='text-sm text-center text-gray-500'>
+                        Não tem uma conta?{' '}
+                        <Link to='/register' className='text-blue-600 hover:underline font-medium'>
+                            Criar conta
+                        </Link>
+                    </p>
                 </form>
             </div>
         </div>

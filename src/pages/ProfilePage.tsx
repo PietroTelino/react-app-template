@@ -96,7 +96,7 @@ export function ProfilePage() {
                                     )}
                                 </div>
                             );
-                        })};
+                        })}
 
                         <button
                             type="submit"
