@@ -9,12 +9,10 @@ interface RoleRouteProps {
 export function RoleRoute({ allowedRoles }: RoleRouteProps) {
     const { user, isLoading } = useAuth();
 
-    if (isLoading) {
-        return null;
-    }
+    if (isLoading) return null;
 
     if (!user || !allowedRoles.includes(user.role)) {
-        return <Navigate to="/dashboard" replace />;
+        return <Navigate to="/403" replace />;
     }
 
     return <Outlet />

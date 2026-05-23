@@ -10,27 +10,40 @@ import { ProfilePage } from '@/pages/ProfilePage';
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage';
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage';
 import { RegisterPage } from '@/pages/RegisterPage';
+import { PublicRoute } from './components/PublicRoute';
+import { ForbiddenPage } from './pages/ForbiddenPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 export default function App() {
     return (
         <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} /> 
+            {/* Rotas públicas — redireciona para dashboard se já estiver logado */}
+            <Route element={<PublicRoute />}>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} /> 
+            </Route>
 
+            {/* Rotas privadas — exigem login */}
             <Route element={<PrivateRoute />}>
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/sessions" element={<SessionsPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
 
+                {/* Rotas restritas — exigem administrator ou god */}
                 <Route element={<RoleRoute allowedRoles={['administrator', 'god']}/>}>
                     <Route path="/users" element={<UsersPage />} />
                     <Route path="/audit" element={<AuditPage />} />
                 </Route>
             </Route>
 
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            {/* Páginas de erro */}
+            <Route path="/403" element={<ForbiddenPage />} />
+            <Route path="/404" element={<NotFoundPage />} />
+
+            {/* Qualquer rota desconhecida vai para o 404 */}
+            <Route path="*" element={<Navigate to="/404" replace />} />
         </Routes>
     );
 }
