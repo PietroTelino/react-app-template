@@ -2,11 +2,14 @@ import { Layout } from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChangePassword } from '@/hooks/useChangePassword';
 import { usePreferences } from '@/hooks/usePreferences';
+import { useDeleteAccount } from '@/hooks/useDeleteAccount';
+import { DeleteAccountModal } from '@/components/DeleteAccountModal';
 
 export function ProfilePage() {
     const { user } = useAuth();
     const passwordForm = useChangePassword();
     const preferences = usePreferences();
+    const deleteAccount = useDeleteAccount();
 
     return (
         <Layout title='Perfil'>
@@ -107,7 +110,45 @@ export function ProfilePage() {
                         </button>
                     </form>
                 </div>
+                <div className='bg-white dark:bg-gray-900 border border-red-200 dark:border-red-900 rounded-xl p-6 flex flex-col gap-4'>
+                    <div>
+                        <h2 className='text-base font-semibold text-red-600 dark:text-red-400'>
+                            Zona de perigo
+                        </h2>
+                        <p className='text-sm text-gray-500 dark:text-gray-400 mt-0.5'>
+                            Ações irreversíveis relacionadas à sua conta.
+                        </p>
+                    </div>
+                    <div className='flex items-center justify-between gap-4 p-4 border border-red-100 dark:border-red-900 rounded-lg bg-red-50 dark:bg-red-950/30'>
+                        <div className='flex flex-col gap-0.5'>
+                            <span className='text-sm font-medium text-gray-900 dark:text-white'>
+                                Remover minha conta
+                            </span>
+                            <span className='text-xs text-gray-500 dark:text-gray-400'>
+                                Sua conta será desativada e você será desconectado imediatamente.
+                            </span>
+                        </div>
+                        <button
+                            onClick={deleteAccount.openModal}
+                            className='
+                                shrink-0 px-4 py-2 text-sm rounded-lg border border-transparent
+                                bg-red-600 hover:bg-red-700 text-white transition-colors
+                            '
+                        >
+                            Remover conta
+                        </button>
+                    </div>
+                </div>
             </div>
+            <DeleteAccountModal
+                isOpen={deleteAccount.modalOpen}
+                password={deleteAccount.password}
+                passwordError={deleteAccount.passwordError}
+                isSubmitting={deleteAccount.isSubmitting}
+                onClose={deleteAccount.closeModal}
+                onConfirm={deleteAccount.handleConfirm}
+                onPasswordChange={deleteAccount.handlePasswordChange}
+            />
         </Layout>
     );
 }
