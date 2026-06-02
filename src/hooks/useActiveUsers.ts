@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getUsers, deleteUser, inactivateUser, reactivateUser, adminResetPassword, createUser, updateUser } from '@/api/users';
 import { useToast } from '@/contexts/ToastContext';
 import { useConfirm } from '@/contexts/ConfirmContext';
 import type { User } from '@/types';
 
 export function useActiveUsers() {
+    const { t } = useTranslation();
     const { showToast } = useToast();
     const { confirm } = useConfirm();
 
@@ -22,7 +24,7 @@ export function useActiveUsers() {
             const data = await getUsers()
             setUsers(data)
         } catch {
-            setError('Erro ao carregar usuários')
+            setError(t('users.loading'))
         } finally {
             setIsLoading(false)
         }
@@ -56,10 +58,10 @@ export function useActiveUsers() {
         try {
             await createUser(data);
             await fetchUsers();
-            showToast('Usuário criado com sucesso', 'success');
+            showToast(t('users.form.createSuccess'), 'success');
             closeModal();
         } catch (err: any) {
-            const message = err?.response?.data?.message ?? 'Erro ao criar usuário';
+            const message = err?.response?.data?.message ?? t('errors.genericError');
             showToast(message, 'error');
         }
     }
@@ -68,78 +70,78 @@ export function useActiveUsers() {
         try {
             await updateUser(id, data);
             await fetchUsers();
-            showToast('Usuário atualizado com sucesso', 'success');
+            showToast(t('users.form.editSuccess'), 'success');
             closeModal();
         } catch (err: any) {
-        const message = err?.response?.data?.message ?? 'Erro ao atualizar usuário';
-        showToast(message, 'error');
+            const message = err?.response?.data?.message ?? t('errors.genericError');
+            showToast(message, 'error');
         }
     }
 
     async function handleDelete(id: string) {
         const ok = await confirm({
-            title: 'Remover usuário',
-            message: 'Tem certeza que deseja remover este usuário?',
-            confirmLabel: 'Remover',
+            title: t('users.confirm.delete.title'),
+            message: t('users.confirm.delete.message'),
+            confirmLabel: t('users.confirm.delete.confirm'),
             variant: 'danger',
         });
         if (!ok) return
         try {
             await deleteUser(id);
             await fetchUsers();
-            showToast('Usuário removido com sucesso', 'success');
+            showToast(t('users.confirm.delete.confirm'), 'success');
         } catch {
-            showToast('Erro ao remover usuário', 'error');
+            showToast(t('errors.genericError'), 'error');
         }
     }
 
     async function handleInactivate(id: string) {
         const ok = await confirm({
-            title: 'Inativar usuário',
-            message: 'O usuário perderá acesso à plataforma. Deseja continuar?',
-            confirmLabel: 'Inativar',
+            title: t('users.confirm.inactivate.title'),
+            message: t('users.confirm.inactivate.message'),
+            confirmLabel: t('users.confirm.inactivate.confirm'),
             variant: 'warning',
         });
         if (!ok) return
         try {
             await inactivateUser(id);
             await fetchUsers();
-            showToast('Usuário inativado com sucesso', 'success');
+            showToast(t('users.confirm.inactivate.confirm'), 'success');
         } catch {
-            showToast('Erro ao inativar usuário', 'error');
+            showToast(t('errors.genericError'), 'error');
         }
     }
 
     async function handleReactivate(id: string) {
         const ok = await confirm({
-            title: 'Reativar usuário',
-            message: 'O usuário voltará a ter acesso à plataforma. Deseja continuar?',
-            confirmLabel: 'Reativar',
+            title: t('users.confirm.reactivate.title'),
+            message: t('users.confirm.reactivate.message'),
+            confirmLabel: t('users.confirm.reactivate.confirm'),
             variant: 'info',
         });
         if (!ok) return
         try {
             await reactivateUser(id);
             await fetchUsers();
-            showToast('Usuário reativado com sucesso', 'success');
+            showToast(t('users.confirm.reactivate.confirm'), 'success');
         } catch {
-            showToast('Erro ao reativar usuário', 'error');
+            showToast(t('errors.genericError'), 'error');
         }
     }
 
     async function handleResetPassword(id: string) {
         const ok = await confirm({
-            title: 'Resetar senha',
-            message: 'Uma nova senha será gerada e enviada por e-mail ao usuário.',
-            confirmLabel: 'Resetar',
+            title: t('users.confirm.resetPassword.title'),
+            message: t('users.confirm.resetPassword.message'),
+            confirmLabel: t('users.confirm.resetPassword.confirm'),
             variant: 'warning',
         });
-        if (!ok) return
+        if (!ok) return;
         try {
             await adminResetPassword(id);
-            showToast('Senha resetada com sucesso', 'success');
+            showToast(t('users.confirm.resetPassword.confirm'), 'success');
         } catch {
-            showToast('Erro ao resetar senha', 'error');
+            showToast(t('errors.genericError'), 'error');
         }
     }
 

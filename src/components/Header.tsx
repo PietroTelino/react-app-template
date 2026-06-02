@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface HeaderProps {
@@ -6,6 +7,7 @@ interface HeaderProps {
 }
 
 export function Header({ title }: HeaderProps) {
+    const { t } = useTranslation();
     const { logout } = useAuth();
     const navigate = useNavigate();
 
@@ -21,7 +23,7 @@ export function Header({ title }: HeaderProps) {
                 onClick={handleLogout}
                 className='text-sm text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors cursor-pointer'
             >
-                Sair
+                {t('nav.logout')}
             </button>
         </header>
     );

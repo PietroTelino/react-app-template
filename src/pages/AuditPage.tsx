@@ -1,35 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { Layout } from '@/components/Layout';
 import { Pagination } from '@/components/Pagination';
 import { useAuditLogs } from '@/hooks/useAuditLogs';
 
-const ACTION_OPTIONS = [
-    { value: '', label: 'Todas as ações' },
-    { value: 'USER_REGISTER', label: 'Registro' },
-    { value: 'USER_LOGIN', label: 'Login' },
-    { value: 'USER_LOGOUT', label: 'Logout' },
-    { value: 'USER_LOGOUT_ALL', label: 'Logout geral' },
-    { value: 'USER_CREATE', label: 'Criação de usuário' },
-    { value: 'USER_UPDATE', label: 'Atualização de usuário' },
-    { value: 'USER_DELETE', label: 'Remoção de usuário' },
-    { value: 'USER_INACTIVATE', label: 'Inativação' },
-    { value: 'USER_REACTIVATE', label: 'Reativação' },
-    { value: 'PASSWORD_CHANGE', label: 'Troca de senha' },
-    { value: 'PASSWORD_RESET_REQUEST', label: 'Solicitação de reset' },
-    { value: 'PASSWORD_RESET_CONFIRM', label: 'Confirmação de reset' },
-    { value: 'PASSWORD_ADMIN_RESET', label: 'Reset por admin' },
-    { value: 'PREFERENCES_UPDATE', label: 'Preferências' },
-    { value: 'SESSION_LOGOUT', label: 'Logout de sessão' },
-];
-
-const ENTITY_OPTIONS = [
-    { value: '', label: 'Todas as entidades' },
-    { value: 'USER', label: 'Usuário' },
-    { value: 'PASSWORD', label: 'Senha' },
-    { value: 'PREFERENCES', label: 'Preferências' },
-    { value: 'SESSION', label: 'Sessão' },
-];
-
 export function AuditPage() {
+    const { t } = useTranslation();
     const {
         logs,
         total,
@@ -45,13 +20,40 @@ export function AuditPage() {
 
     const hasFilters = !!filters.action || !!filters.entity;
 
+    const ACTION_OPTIONS = [
+        { value: '', label: t('audit.filters.allActions') },
+        { value: 'USER_REGISTER', label: t('audit.actions.USER_REGISTER') },
+        { value: 'USER_LOGIN', label: t('audit.actions.USER_LOGIN') },
+        { value: 'USER_LOGOUT', label: t('audit.actions.USER_LOGOUT') },
+        { value: 'USER_LOGOUT_ALL', label: t('audit.actions.USER_LOGOUT_ALL') },
+        { value: 'USER_CREATE', label: t('audit.actions.USER_CREATE') },
+        { value: 'USER_UPDATE', label: t('audit.actions.USER_UPDATE') },
+        { value: 'USER_DELETE', label: t('audit.actions.USER_DELETE') },
+        { value: 'USER_INACTIVATE', label: t('audit.actions.USER_INACTIVATE') },
+        { value: 'USER_REACTIVATE', label: t('audit.actions.USER_REACTIVATE') },
+        { value: 'PASSWORD_CHANGE', label: t('audit.actions.PASSWORD_CHANGE') },
+        { value: 'PASSWORD_RESET_REQUEST', label: t('audit.actions.PASSWORD_RESET_REQUEST') },
+        { value: 'PASSWORD_RESET_CONFIRM', label: t('audit.actions.PASSWORD_RESET_CONFIRM') },
+        { value: 'PASSWORD_ADMIN_RESET', label: t('audit.actions.PASSWORD_ADMIN_RESET') },
+        { value: 'PREFERENCES_UPDATE', label: t('audit.actions.PREFERENCES_UPDATE') },
+        { value: 'SESSION_LOGOUT', label: t('audit.actions.SESSION_LOGOUT') },
+    ];
+
+    const ENTITY_OPTIONS = [
+        { value: '', label: t('audit.filters.allEntities') },
+        { value: 'USER', label: t('audit.entities.USER') },
+        { value: 'PASSWORD', label: t('audit.entities.PASSWORD') },
+        { value: 'PREFERENCES', label: t('audit.entities.PREFERENCES') },
+        { value: 'SESSION', label: t('audit.entities.SESSION') },
+    ];
+
     return (
         <Layout title="Auditoria">
             <div className='flex flex-col gap-6'>
                 <div>
-                    <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>Logs de auditoria</h2>
+                    <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>{t('audit.title')}</h2>
                     <p className='text-sm text-gray-500 dark:text-gray-400 mt-0.5'>
-                        {total} registro{total !== 1 ? 's' : ''} encontrado{total !== 1 ? 's' : ''}
+                        {t('audit.count', { count: total })}
                     </p>
                 </div>
                 <div className='flex items-center gap-3 flex-wrap'>
@@ -84,12 +86,12 @@ export function AuditPage() {
                             onClick={handleClearFilters}
                             className='text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:underline'
                         >
-                            Limpar filtros
+                            {t('audit.clearFilters')}
                         </button>
                     )}
                 </div>
                 {isLoading && (
-                    <div className='text-sm text-gray-500 dark:text-gray-400'>Carregando logs...</div>
+                    <div className='text-sm text-gray-500 dark:text-gray-400'>{t('audit.loading')}</div>
                 )}
                 {error && (
                     <div className='px-4 py-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg'>
@@ -103,12 +105,12 @@ export function AuditPage() {
                             <table className='w-full text-sm'>
                                 <thead>
                                     <tr className='border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800'>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Data</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Ação</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Entidade</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Usuário</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Realizado por</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">IP</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">{t('audit.table.date')}</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">{t('audit.table.action')}</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">{t('audit.table.entity')}</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">{t('audit.table.user')}</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">{t('audit.table.performedBy')}</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">{t('audit.table.ip')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className='divide-y divide-gray-100 dark:divide-gray-800'>
@@ -152,7 +154,7 @@ export function AuditPage() {
                             </table>
                             {logs.length === 0 && (
                                 <div className='px-4 py-8 text-center text-sm text-gray-400 dark:text-gray-500'>
-                                    Nenhum log encontrado
+                                    {t('audit.noLogs')}
                                 </div>
                             )}
                         </div>

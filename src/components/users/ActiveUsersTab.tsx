@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useActiveUsers } from '@/hooks/useActiveUsers';
 import { useAuth } from '@/contexts/AuthContext';
 import { RoleBadge } from '@/components/RoleBadge';
@@ -5,6 +6,7 @@ import { StatusBadge } from '@/components/StatusBadge';
 import { UserFormModal } from './UserFormModal';
 
 export function ActiveUsersTab() {
+    const { t } = useTranslation();
     const { user: currentUser } = useAuth();
     const {
         users,
@@ -29,21 +31,21 @@ export function ActiveUsersTab() {
                 <div className='flex items-center justify-between'>
                 <div>
                     <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>
-                        Usuários cadastrados
+                        {t('users.title')}
                     </h2>
                     <p className='text-sm text-gray-500 dark:text-gray-400 mt-0.5'>
-                        {users.length} usuário{users.length !== 1 ? 's' : ''} encontrado{users.length !== 1 ? 's' : ''}
+                        {t('users.count', { count: users.length })}
                     </p>
                 </div>
                     <button
                         onClick={openCreateModal}
                         className='px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors'
                     >
-                        + Novo usuário
+                        {t('users.newUser')}
                     </button>
                 </div>
 
-                {isLoading && <p className='text-sm text-gray-500 dark:text-gray-400'>Carregando usuários...</p>}
+                {isLoading && <p className='text-sm text-gray-500 dark:text-gray-400'>{t('users.loading')}</p>}
 
                 {error && (
                     <div className='px-4 py-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg'>
@@ -56,11 +58,11 @@ export function ActiveUsersTab() {
                         <table className='w-full text-sm'>
                             <thead>
                                 <tr className='border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800'>
-                                    <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>Nome</th>
-                                    <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>E-mail</th>
-                                    <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>Role</th>
-                                    <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>Status</th>
-                                    <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>Criado em</th>
+                                    <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>{t('users.table.name')}</th>
+                                    <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>{t('users.table.email')}</th>
+                                    <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>{t('users.table.role')}</th>
+                                    <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>{t('users.table.status')}</th>
+                                    <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>{t('users.table.createdAt')}</th>
                                     <th className='px-4 py-3' />
                                 </tr>
                             </thead>
@@ -75,7 +77,7 @@ export function ActiveUsersTab() {
                                         <tr key={user.id} className='hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors'>
                                             <td className='px-4 py-3 font-medium text-gray-900 dark:text-white'>
                                                 {user.name}
-                                                {isSelf && <span className='ml-2 text-xs text-gray-400 dark:text-gray-500'>(você)</span>}
+                                                {isSelf && <span className='ml-2 text-xs text-gray-400 dark:text-gray-500'>{t('users.actions.you')}</span>}
                                             </td>
                                             <td className='px-4 py-3 text-gray-600 dark:text-gray-400'>{user.email}</td>
                                             <td className='px-4 py-3'><RoleBadge role={user.role} /></td>
@@ -90,34 +92,34 @@ export function ActiveUsersTab() {
                                                         onClick={() => openEditModal(user)}
                                                         className='text-xs text-gray-500 dark:text-gray-400 hover:underline'
                                                     >
-                                                        Editar
+                                                        {t('users.actions.edit')}
                                                     </button>
                                                     {isInactive ? (
                                                         <button
                                                             onClick={() => handleReactivate(user.id)}
                                                             className='text-xs text-green-600 dark:text-green-400 hover:underline'
                                                         >
-                                                            Reativar
+                                                            {t('users.actions.reactivate')}
                                                         </button>
                                                     ) : (
                                                         <button
                                                             onClick={() => handleInactivate(user.id)}
                                                             className='text-xs text-yellow-600 dark:text-yellow-400 hover:underline'
                                                         >
-                                                            Inativar
+                                                            {t('users.actions.inactivate')}
                                                         </button>
                                                     )}
                                                     <button
                                                         onClick={() => handleResetPassword(user.id)}
                                                         className='text-xs text-blue-600 dark:text-blue-400 hover:underline'
                                                     >
-                                                        Resetar senha
+                                                        {t('users.actions.resetPassword')}
                                                     </button>
                                                     <button
                                                         onClick={() => handleDelete(user.id)}
                                                         className='text-xs text-red-500 dark:text-red-400 hover:underline'
                                                     >
-                                                        Remover
+                                                        {t('users.actions.delete')}
                                                     </button>
                                                 </div>
                                                 )}
@@ -129,7 +131,7 @@ export function ActiveUsersTab() {
                         </table>
                         {users.length === 0 && (
                             <div className='px-4 py-8 text-center text-sm text-gray-400 dark:text-gray-500'>
-                                Nenhum usuário encontrado
+                                {t('users.noUsers')}
                             </div>
                         )}
                     </div>

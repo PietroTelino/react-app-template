@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getMySessions, logoutSession } from '@/api/sessions';
 import { useToast } from '@/contexts/ToastContext';
 import { useConfirm } from '@/contexts/ConfirmContext';
 import type { Session } from '@/types';
 
 export function useSessions() {
+    const { t } = useTranslation();
     const [sessions, setSessions] = useState<Session[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -18,7 +20,7 @@ export function useSessions() {
             const data = await getMySessions();
             setSessions(data);
         } catch {
-            setError('Erro ao carregar sessões');
+            setError(t('sessions.loading'));
         } finally {
             setIsLoading(false);
         }
@@ -30,9 +32,9 @@ export function useSessions() {
 
     async function handleLogoutSession(sessionId: string) {
         const ok = await confirm({
-            title: 'Encerrar sessão',
-            message: 'Tem certeza que deseja encerrar esta sessão?',
-            confirmLabel: 'Encerrar',
+            title: t('sessions.terminateTitle'),
+            message: t('sessions.terminateMessage'),
+            confirmLabel: t('sessions.terminate'),
             variant: 'danger',
         });
         if (!ok) return;
@@ -40,9 +42,9 @@ export function useSessions() {
         try {
             await logoutSession(sessionId);
             setSessions((prev) => prev.filter((s) => s.id !== sessionId));
-            showToast('Sessão encerrada com sucesso', 'success');
+            showToast(t('sessions.terminateSuccess'), 'success');
         } catch {
-            showToast('Erro ao encerrar sessão', 'error');
+            showToast(t('errors.genericError'), 'error');
         }
     }
 

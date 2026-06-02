@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { changeMyPassword } from '@/api/users';
 import { useToast } from '@/contexts/ToastContext';
 
@@ -15,6 +16,7 @@ interface FormErrors {
 }
 
 export function useChangePassword() {
+    const { t } = useTranslation();
     const { showToast } = useToast();
 
     const [form, setForm] = useState<FormState>({
@@ -37,21 +39,21 @@ export function useChangePassword() {
         const newErrors: FormErrors = {};
 
         if (!form.currentPassword) {
-            newErrors.currentPassword = 'Senha atual é obrigatória';
+            newErrors.currentPassword = t('errors.required', { field: t('profile.changePassword.current') });
         }
 
         if (!form.newPassword) {
-            newErrors.newPassword = 'Nova senha é obrigatória';
+            newErrors.newPassword = t('errors.required', { field: t('profile.changePassword.new') });
         } else if (form.newPassword.length < 8) {
-            newErrors.newPassword = 'A senha deve ter no mínimo 8 caracteres';
+            newErrors.newPassword = t('errors.passwordMinLength');
         } else if (!/[^a-zA-Z0-9]/.test(form.newPassword)) {
-            newErrors.newPassword = 'A senha deve conter pelo menos 1 caractere especial';
+            newErrors.newPassword = t('errors.passwordSpecialChar');
         }
 
         if (!form.confirmPassword) {
-            newErrors.confirmPassword = 'Confirmação de senha é obrigatória';
+            newErrors.confirmPassword = t('errors.required', { field: t('profile.changePassword.confirm') });
         } else if (form.newPassword !== form.confirmPassword) {
-            newErrors.confirmPassword = 'As senhas não coincidem';
+            newErrors.confirmPassword = t('errors.passwordsMismatch');
         }
 
         setErrors(newErrors);
@@ -68,10 +70,10 @@ export function useChangePassword() {
                 currentPassword: form.currentPassword,
                 newPassword: form.newPassword,
             });
-            showToast('Senha alterada com sucesso', 'success');
+            showToast(t('profile.changePassword.success'), 'success');
             setForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
         } catch (error: any) {
-            const message = error?.response?.data?.message ?? 'Erro ao alterar senha';
+            const message = error?.response?.data?.message ?? t('errors.genericError');
             showToast(message, 'error');
         } finally {
             setIsSubmitting(false);

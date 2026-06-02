@@ -1,17 +1,17 @@
-import { useLoginForm } from '@/hooks/useLoginForm';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useLoginForm } from '@/hooks/useLoginForm';
 
 export function LoginPage() {
+    const { t } = useTranslation();
     const { form, errors, isSubmitting, handleChange, handleSubmit } = useLoginForm();
 
     return (
         <div className='min-h-screen bg-gray-50 flex items-center justify-center p-4'>
             <div className='w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8'>
                 <div className='mb-8'>
-                    <h1 className='text-2xl font-bold text-gray-900'>Entrar</h1>
-                    <p className='text-sm text-gray-500 mt-1'>
-                        Acesse sua conta para continuar
-                    </p>
+                    <h1 className='text-2xl font-bold text-gray-900'>{t('auth.login.title')}</h1>
+                    <p className='text-sm text-gray-500 mt-1'>{t('auth.login.subtitle')}</p>
                 </div>
 
                 {errors.general && (
@@ -23,7 +23,7 @@ export function LoginPage() {
                 <form onSubmit={handleSubmit} noValidate className='space-y-5'>
                     <div className='flex flex-col gap-1.5'>
                         <label htmlFor='email' className='text-sm font-medium text-gray-700'>
-                            E-mail
+                            {t('auth.login.email')}
                         </label>
                         <input
                             id='email'
@@ -49,7 +49,7 @@ export function LoginPage() {
 
                     <div className='flex flex-col gap-1.5'>
                         <label htmlFor='password' className='text-sm font-medium text-gray-700'>
-                            Senha
+                            {t('auth.login.password')}
                         </label>
                         <input
                             id='password'
@@ -75,7 +75,7 @@ export function LoginPage() {
 
                     <div className='flex justify-end'>
                         <a href='/forgot-password' className='text-xs text-blue-600 hover:text-blue-700 hover:underline'>
-                            Esqueceu a senha?
+                            {t('auth.login.forgotPassword')}
                         </a>
                     </div>
 
@@ -89,12 +89,12 @@ export function LoginPage() {
                             transition-colors
                         '
                     >
-                        {isSubmitting ? 'Entrando...' : 'Entrar'}
+                        {isSubmitting ? t('auth.login.submitting') : t('auth.login.submit')}
                     </button>
                     <p className='text-sm text-center text-gray-500'>
-                        Não tem uma conta?{' '}
+                        {t('auth.login.noAccount')}{' '}
                         <Link to='/register' className='text-blue-600 hover:underline font-medium'>
-                            Criar conta
+                            {t('auth.login.register')}
                         </Link>
                     </p>
                 </form>

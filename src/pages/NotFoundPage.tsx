@@ -1,7 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 
 export function NotFoundPage() {
+    const { t } = useTranslation();
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
@@ -13,10 +15,10 @@ export function NotFoundPage() {
                 </div>
                 <div className='flex flex-col gap-2'>
                     <h1 className='text-2xl font-bold text-gray-900 dark:text-white'>
-                        Página não encontrada
+                        {t('errors.pageNotFound')}
                     </h1>
                     <p className='text-sm text-gray-500 dark:text-gray-400'>
-                        A página que você está procurando não existe ou foi removida.
+                        {t('errors.pageNotFoundMessage')}
                     </p>
                 </div>
                 <div className='flex gap-3'>
@@ -28,7 +30,7 @@ export function NotFoundPage() {
                             transition-colors
                         '
                     >
-                        Voltar
+                        {t('common.back')}
                     </button>
                     <Link
                         to={isAuthenticated ? '/dashboard' : '/login'}
@@ -37,7 +39,7 @@ export function NotFoundPage() {
                             text-white transition-colors
                         '
                     >
-                            {isAuthenticated ? 'Ir para o dashboard' : 'Ir para o login'}
+                            {isAuthenticated ? t('common.goToDashboard') : t('common.goToLogin')}
                     </Link>
                 </div>
             </div>

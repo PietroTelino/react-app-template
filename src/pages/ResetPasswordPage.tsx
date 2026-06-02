@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useResetPassword } from '@/hooks/useResetPassword';
 
 export function ResetPasswordPage() {
+    const { t } = useTranslation()
     const {
         token,
         form,
@@ -16,12 +18,12 @@ export function ResetPasswordPage() {
             <div className='min-h-screen bg-gray-50 flex items-center justify-center p-4'>
                 <div className='w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center flex flex-col gap-4'>
                     <div className='text-4xl'>⚠️</div>
-                    <h1 className='text-xl font-bold text-gray-900'>Link inválido</h1>
+                    <h1 className='text-xl font-bold text-gray-900'>{t('auth.resetPassword.invalidToken')}</h1>
                     <p className='text-sm text-gray-500'>
-                        Este link de redefinição de senha é inválido ou já foi utilizado.
+                        {t('auth.resetPassword.invalidTokenMessage')}
                     </p>
                     <Link to='/forgot-password' className='text-sm text-blue-600 hover:underline'>
-                        Solicitar novo link
+                        {t('auth.resetPassword.requestNewLink')}
                     </Link>
                 </div>
             </div>
@@ -32,14 +34,14 @@ export function ResetPasswordPage() {
         <div className='min-h-screen bg-gray-50 flex items-center justify-center p-4'>
             <div className='w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8'>
                 <div className='mb-8'>
-                    <h1 className='text-2xl font-bold text-gray-900'>Redefinir senha</h1>
+                    <h1 className='text-2xl font-bold text-gray-900'>{t('auth.resetPassword.title')}</h1>
                     <p className='text-sm text-gray-500 mt-1'>
-                        Crie uma nova senha para sua conta.
+                        {t('auth.resetPassword.subtitle')}
                     </p>
                 </div>
                 <form onSubmit={handleSubmit} noValidate className='flex flex-col gap-5'>
                     <div className='flex flex-col gap-1.5'>
-                        <label className='text-sm font-medium text-gray-700'>Nova senha</label>
+                        <label className='text-sm font-medium text-gray-700'>{t('auth.resetPassword.password')}</label>
                         <input
                             name='password'
                             type='password'
@@ -61,7 +63,7 @@ export function ResetPasswordPage() {
                     </div>
                     <div className='flex flex-col gap-1.5'>
                         <label className='text-sm font-medium text-gray-700'>
-                            Confirmar nova senha
+                            {t('auth.resetPassword.confirmPassword')}
                         </label>
                         <input
                             name='confirmPassword'
@@ -91,13 +93,13 @@ export function ResetPasswordPage() {
                             text-white text-sm font-medium rounded-lg transition-colors
                         '
                     >
-                        {isSubmitting ? 'Salvando...' : 'Redefinir senha'}
+                        {isSubmitting ? t('auth.resetPassword.submitting') : t('auth.resetPassword.submit')}
                     </button>
                     <Link
                         to='/login'
                         className='text-sm text-center text-gray-500 hover:text-gray-700 hover:underline'
                     >
-                        Voltar para o login
+                        {t('auth.resetPassword.backToLogin')}
                     </Link>
                 </form>
             </div>

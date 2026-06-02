@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 interface PaginationProps {
     currentPage: number;
     totalPages: number;
@@ -5,12 +7,14 @@ interface PaginationProps {
 }
 
 export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+    const { t } = useTranslation();
+
     if (totalPages <= 1) return null;
 
     return (
         <div className='flex items-center justify-between text-sm text-gray-600 dark:text-gray-400'>
             <span>
-                Página {currentPage} de {totalPages}
+                {t('pagination.page', { current: currentPage, total: totalPages })}
             </span>
             <div className='flex items-center gap-1'>
                 <button

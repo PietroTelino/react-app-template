@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { Session } from '@/types';
 
 interface SessionCardProps {
@@ -27,6 +28,7 @@ function isExpiringSoon(expiresAt: string): boolean {
 }
 
 export function SessionCard( { session, onLogout }: SessionCardProps ) {
+    const { t } = useTranslation();
     const expiringSoon = isExpiringSoon(session.expiresAt);
 
     return (
@@ -38,22 +40,22 @@ export function SessionCard( { session, onLogout }: SessionCardProps ) {
                     </span>
                     {expiringSoon && (
                         <span className='px-2 py-0.5 text-xs rounded-full bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-400'>
-                            Expira em breve
+                            {t('sessions.expiringSoon')}
                         </span>
                     )}
                 </div>
 
                 <div className='flex flex-col gap-1 text-xs text-gray-500 dark:text-gray-400'>
                     <span>
-                        <span className='font-medium text-gray-600 dark:text-gray-300'>IP: </span>
+                        <span className='font-medium text-gray-600 dark:text-gray-300'>{t('sessions.ip')}: </span>
                         {session.ipAddress ?? '—'}
                     </span>
                     <span>
-                        <span className='font-medium text-gray-600 dark:text-gray-300'>Criada em: </span>
+                        <span className='font-medium text-gray-600 dark:text-gray-300'>{t('sessions.createdAt')}: </span>
                         {formatDate(session.createdAt)}
                     </span>
                     <span>
-                        <span className='font-medium text-gray-600 dark:text-gray-300'>Expira em: </span>
+                        <span className='font-medium text-gray-600 dark:text-gray-300'>{t('sessions.expiresAt')}: </span>
                         {formatDate(session.expiresAt)}
                     </span>
                 </div>
@@ -62,7 +64,7 @@ export function SessionCard( { session, onLogout }: SessionCardProps ) {
                 onClick={() => onLogout(session.id)}
                 className='shrink-0 text-xs text-red-500 hover:text-red-700 dark:hover:text-red-400 border border-red-200 dark:border-red-800 hover:border-red-400 dark:hover:border-red-600 px-3 py-1.5 rounded-lg transition-colors'
             >
-                Encerrar
+                {t('sessions.terminate')}
             </button>
         </div>
     );

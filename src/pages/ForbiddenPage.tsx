@@ -1,7 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 
 export function ForbiddenPage() {
+    const { t } = useTranslation();
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
@@ -13,11 +15,10 @@ export function ForbiddenPage() {
                 </div>
                 <div className='flex flex-col gap-2'>
                     <h1 className='text-2xl font-bold text-gray-900 dark:text-white'>
-                        Acesso negado
+                        {t('errors.forbidden')}
                     </h1>
                     <p className='text-sm text-gray-500 dark:text-gray-400'>
-                        Você não tem permissão para acessar esta página.
-                        Entre em contato com um administrador se acredita que isso é um erro.
+                        {t('errors.forbiddenMessage')}
                     </p>
                 </div>
                 <div className='flex gap-3'>
@@ -29,7 +30,7 @@ export function ForbiddenPage() {
                             transition-colors
                         '
                     >
-                        Voltar
+                        {t('common.back')}
                     </button>
                     <Link
                         to={isAuthenticated ? '/dashboard' : '/login'}
@@ -38,7 +39,7 @@ export function ForbiddenPage() {
                             text-white transition-colors
                         '
                     >
-                        {isAuthenticated ? 'Ir para o dashboard' : 'Ir para o login'}
+                        {isAuthenticated ? t('common.goToDashboard') : t('common.goToLogin')}
                     </Link>
                 </div>
             </div>

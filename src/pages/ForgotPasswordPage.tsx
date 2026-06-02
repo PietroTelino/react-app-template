@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useForgotPassword } from '@/hooks/useForgotPassword';
 
 export function ForgotPasswordPage() {
+    const { t } =useTranslation();
     const {
         email,
         emailError,
@@ -17,29 +19,29 @@ export function ForgotPasswordPage() {
                 {submitted ? (
                     <div className='flex flex-col gap-4 text-center'>
                         <div className='text-4xl'>📬</div>
-                        <h1 className='text-xl font-bold text-gray-900'>Verifique seu e-mail</h1>
+                        <h1 className='text-xl font-bold text-gray-900'>{t('auth.forgotPassword.successTitle')}</h1>
                         <p className='text-sm text-gray-500'>
-                            Se esse e-mail estiver cadastrado, você receberá as instruções para redefinir sua senha em breve.
+                            {t('auth.forgotPassword.successMessage')}
                         </p>
                         <Link
                             to='/login'
                             className='text-sm text-blue-600 hover:underline mt-2'
                         >
-                            Voltar para o login
+                            {t('auth.forgotPassword.backToLogin')}
                         </Link>
                     </div>
                 ) : (
                     <>
                         <div className='mb-8'>
-                            <h1 className='text-2xl font-bold text-gray-900'>Esqueceu a senha?</h1>
+                            <h1 className='text-2xl font-bold text-gray-900'>{t('auth.forgotPassword.title')}</h1>
                             <p className='text-sm text-gray-500 mt-1'>
-                                Informe seu e-mail e enviaremos as instruções para redefinir sua senha.
+                                {t('auth.forgotPassword.subtitle')}
                             </p>
                         </div>
                         <form onSubmit={handleSubmit} noValidate className='flex flex-col gap-5'>
                             <div className='flex flex-col gap-1.5'>
                                 <label className='text-sm font-medium text-gray-700'>
-                                    E-mail
+                                    {t('auth.forgotPassword.email')}
                                 </label>
                                 <input
                                     name='text'
@@ -70,13 +72,13 @@ export function ForgotPasswordPage() {
                                     text-white text-sm font-medium rounded-lg transition-colors
                                 '
                             >
-                                {isSubmitting ? 'Enviando...' : 'Enviar instruções'}
+                                {isSubmitting ? t('auth.forgotPassword.submitting') : t('auth.forgotPassword.submit')}
                             </button>
                             <Link
                                 to='/login'
                                 className='text-sm text-center text-gray-500 hover:text-gray-700 hover:underline'
                             >
-                                Voltar para o login
+                                {t('auth.forgotPassword.backToLogin')}
                             </Link>
                         </form>
                     </>

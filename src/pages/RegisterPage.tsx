@@ -1,24 +1,24 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useRegisterForm } from '@/hooks/useRegisterForm';
 
-const fields = [
-    { name: 'name', label: 'Nome', type: 'text', placeholder: 'Seu nome completo', autoComplete: 'name' },
-    { name: 'email', label: 'E-mail', type: 'email', placeholder: 'seu@email.com', autoComplete: 'email' },
-    { name: 'password', label: 'Senha', type: 'password', placeholder: '••••••••', autoComplete: 'new-password' },
-    { name: 'confirmPassword', label: 'Confirmar senha', type: 'password', placeholder: '••••••••', autoComplete: 'new-password' },
-] as const;
-
 export function RegisterPage() {
+    const { t } = useTranslation();
     const { form, errors, isSubmitting, handleChange, handleSubmit } = useRegisterForm();
+
+    const fields = [
+        { name: 'name', label: t('auth.register.name'), type: 'text', placeholder: 'Seu nome completo', autoComplete: 'name' },
+        { name: 'email', label: t('auth.register.email'), type: 'email', placeholder: 'seu@email.com', autoComplete: 'email' },
+        { name: 'password', label: t('auth.register.password'), type: 'password', placeholder: '••••••••', autoComplete: 'new-password' },
+        { name: 'confirmPassword', label: t('auth.register.confirmPassword'), type: 'password', placeholder: '••••••••', autoComplete: 'new-password' },
+    ] as const;
 
     return (
         <div className='min-h-screen bg-gray-50 flex items-center justify-center p-4'>
             <div className='w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8'>
                 <div className="mb-8">
-                    <h1 className='text-2xl font-bold text-gray-900'>Criar conta</h1>
-                    <p className='text-sm text-gray-500 mt-1'>
-                        Preencha os dados abaixo para se registrar
-                    </p>
+                    <h1 className='text-2xl font-bold text-gray-900'>{t('auth.register.title')}</h1>
+                    <p className='text-sm text-gray-500 mt-1'>{t('auth.register.subtitle')}</p>
                 </div>
 
                 <form onSubmit={handleSubmit} noValidate className='flex flex-col gap-5'>
@@ -58,13 +58,13 @@ export function RegisterPage() {
                             text-white text-sm font-medium rounded-lg transition-colors mt-1
                         '
                     >
-                        {isSubmitting ? 'Criando conta...' : 'Criar conta'}
+                        {isSubmitting ? t('auth.register.submitting') : t('auth.register.submit')}
                     </button>
 
                     <p className='text-sm text-center text-gray-500'>
-                        Já tem uma conta?{' '}
+                        {t('auth.register.hasAccount')}{' '}
                         <Link to='/login' className='text-blue-600 hover:underline font-medium'>
-                            Entrar
+                            {t('auth.register.login')}
                         </Link>
                     </p>
                 </form>

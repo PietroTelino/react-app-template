@@ -1,18 +1,20 @@
+import { useTranslation } from 'react-i18next';
 import { useDeletedUsers } from '@/hooks/useDeletedUsers';
 import { RoleBadge } from '@/components/RoleBadge';
 
 export function DeletedUsersTab() {
+    const { t } = useTranslation();
     const { users, isLoading, error, isGod, handleRestore, handleHardDelete } = useDeletedUsers();
 
     return (
         <div className='flex flex-col gap-6'>
             <div>
-                <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>Usuários removidos</h2>
+                <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>{t('users.deleted.title')}</h2>
                 <p className='text-sm text-gray-500 dark:text-gray-400 mt-0.5'>
-                    {users.length} usuário{users.length !== 1 ? 's' : ''} removido{users.length !== 1 ? 's' : ''}
+                    {t('users.deleted.count', { count: users.length })}
                 </p>
             </div>
-            {isLoading && <p className='text-sm text-gray-500 dark:text-gray-400'>Carregando...</p>}
+            {isLoading && <p className='text-sm text-gray-500 dark:text-gray-400'>{t('users.loading')}</p>}
             {error && (
                 <div className='px-4 py-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg'>
                     <p className='text-sm text-red-600 dark:text-red-400'>{error}</p>
@@ -23,10 +25,10 @@ export function DeletedUsersTab() {
                     <table className='w-full text-sm'>
                         <thead>
                             <tr className='border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800'>
-                                <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>Nome</th>
-                                <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>E-mail</th>
-                                <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>Role</th>
-                                <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>Removido em</th>
+                                <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>{t('users.table.name')}</th>
+                                <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>{t('users.table.email')}</th>
+                                <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>{t('users.table.role')}</th>
+                                <th className='text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400'>{t('users.table.deletedAt')}</th>
                                 <th className='px-4 py-3' />
                             </tr>
                         </thead>
@@ -48,14 +50,14 @@ export function DeletedUsersTab() {
                                                 onClick={() => handleRestore(user.id)}
                                                 className='text-xs text-green-600 dark:text-green-400 hover:underline'
                                             >
-                                                Restaurar
+                                                {t('users.actions.restore')}
                                             </button>
                                             {isGod && (
                                                 <button
                                                     onClick={() => handleHardDelete(user.id)}
                                                     className='text-xs text-red-500 dark:text-red-400 hover:underline'
                                                 >
-                                                    Deletar permanentemente
+                                                    {t('users.actions.hardDelete')}
                                                 </button>
                                             )}
                                         </div>
@@ -67,7 +69,7 @@ export function DeletedUsersTab() {
 
                     {users.length === 0 && (
                         <div className='px-4 py-8 text-center text-sm text-gray-400 dark:text-gray-500'>
-                            Nenhum usuário removido
+                            {t('users.deleted.noUsers')}
                         </div>
                     )}
                 </div>

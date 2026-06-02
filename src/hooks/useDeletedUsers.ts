@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getDeletedUsers, restoreUser, hardDeleteUser } from '@/api/users';
 import { useToast } from '@/contexts/ToastContext';
 import { useConfirm } from '@/contexts/ConfirmContext';
@@ -6,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import type { User } from '@/types';
 
 export function useDeletedUsers() {
+    const { t } = useTranslation();
     const { showToast } = useToast();
     const { confirm } = useConfirm();
     const { user: currentUser } = useAuth();
@@ -21,7 +23,7 @@ export function useDeletedUsers() {
             const data = await getDeletedUsers();
             setUsers(data);
         } catch {
-            setError('Erro ao carregar usuários deletados');
+            setError(t('users.loading'));
         } finally {
             setIsLoading(false);
         }
@@ -33,35 +35,35 @@ export function useDeletedUsers() {
 
     async function handleRestore(id: string) {
         const ok = await confirm({
-            title: 'Restaurar usuário',
-            message: 'O usuário voltará a ter acesso à plataforma. Deseja continuar?',
-            confirmLabel: 'Restaurar',
+            title: t('users.confirm.restore.title'),
+            message: t('users.confirm.restore.message'),
+            confirmLabel: t('users.confirm.restore.confirm'),
             variant: 'info',
         });
         if (!ok) return
         try {
             await restoreUser(id);
             await fetchUsers();
-            showToast('Usuário restaurado com sucesso', 'success');
+            showToast(t('users.deleted.restoreSuccess'), 'success');
         } catch {
-            showToast('Erro ao restaurar usuário', 'error');
+            showToast(t('errors.genericError'), 'error');
         }
     }
 
     async function handleHardDelete(id: string) {
         const ok = await confirm({
-            title: 'Deletar permanentemente',
-            message: 'Esta ação é irreversível. O usuário e todos os seus dados serão removidos definitivamente.',
-            confirmLabel: 'Deletar permanentemente',
+            title: t('users.confirm.hardDelete.title'),
+            message: t('users.confirm.hardDelete.message'),
+            confirmLabel: t('users.confirm.hardDelete.confirm'),
             variant: 'danger',
         });
         if (!ok) return
         try {
             await hardDeleteUser(id);
             await fetchUsers();
-            showToast('Usuário deletado permanentemente', 'success');
+            showToast(t('users.deleted.hardDeleteSuccess'), 'success');
         } catch {
-            showToast('Erro ao deletar usuário', 'error');
+            showToast(t('errors.genericError'), 'error');
         }
     }
 

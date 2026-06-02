@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { selfDelete } from '@/api/users';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/contexts/ToastContext';
+import { useTranslation } from 'react-i18next';
 
 export function useDeleteAccount() {
+    const { t } = useTranslation();
     const { logout } = useAuth();
     const { showToast } = useToast();
     const navigate = useNavigate();
@@ -33,7 +35,7 @@ export function useDeleteAccount() {
 
     async function handleConfirm() {
         if (!password) {
-            setPasswordError('Senha é obrigatória');
+            setPasswordError(t('errors.required', { field: t('deleteAccount.passwordLabel') }));
             return;
         }
 
@@ -41,10 +43,10 @@ export function useDeleteAccount() {
         try {
             await selfDelete(password);
             await logout();
-            showToast('Conta removida com sucesso', 'success');
+            showToast(t('deleteAccount.success'), 'success');
             navigate('/login');
         } catch (error: any) {
-            const message = error?.response?.data?.message ?? 'Erro ao remover a conta';
+            const message = error?.response?.data?.message ?? t('errors.genericError');
             setPasswordError(message);
         } finally {
             setIsSubmitting(false);

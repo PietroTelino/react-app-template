@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 interface DeleteAccountModalProps {
     isOpen: boolean;
     password: string;
@@ -17,6 +19,8 @@ export function DeleteAccountModal({
     onConfirm,
     onPasswordChange,
 }: DeleteAccountModalProps) {
+    const { t } = useTranslation();
+
     if (!isOpen) return null;
 
     return (
@@ -25,15 +29,15 @@ export function DeleteAccountModal({
             <div className='relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-lg w-full max-w-md mx-4 p-6 flex flex-col gap-5'>
                 <div className='flex flex-col gap-1'>
                     <h2 className='text-base font-semibold text-gray-900 dark:text-white'>
-                        Remover conta
+                        {t('deleteAccount.title')}
                     </h2>
                     <p className='text-sm text-gray-500 dark:text-gray-400'>
-                        Esta ação é irreversível. Sua conta será desativada imediatamente e você será desconectado.
+                        {t('deleteAccount.description')}
                     </p>
                 </div>
                 <div className='flex flex-col gap-1.5'>
                     <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
-                        Digite sua senha para confirmar
+                        {t('deleteAccount.passwordLabel')}
                     </label>
                     <input
                         type='password'
@@ -65,7 +69,7 @@ export function DeleteAccountModal({
                             disabled:opacity-50 disabled:cursor-not-allowed transition-colors
                         '
                     >
-                        Cancelar
+                        {t('common.cancel')}
                     </button>
                     <button
                         onClick={onConfirm}
@@ -76,7 +80,7 @@ export function DeleteAccountModal({
                             disabled:bg-red-400 disabled:cursor-not-allowed transition-colors
                         '
                     >
-                        {isSubmitting ? 'Removendo...' : 'Remover conta'}
+                        {isSubmitting ? t('deleteAccount.submitting') : t('deleteAccount.submit')}
                     </button>
                 </div>
             </div>
