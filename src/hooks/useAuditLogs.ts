@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { getAuditLogs } from '@/api/audit';
 import type { AuditLog } from '@/types';
+import { useTranslation } from 'react-i18next';
 
 interface Filters {
     action: string,
@@ -10,6 +11,7 @@ interface Filters {
 const LIMIT = 15;
 
 export function useAuditLogs() {
+    const { t } = useTranslation();
     const [logs, setLogs] = useState<AuditLog[]>([]);
     const [total, setTotal] = useState(0);
     const [offset, setOffset] = useState(0);
@@ -30,11 +32,11 @@ export function useAuditLogs() {
             setLogs(data.data);
             setTotal(data.pagination.total);
         } catch {
-            setError('Erro ao carregar logs de auditoria');
+            setError(t('errors.genericError'));
         } finally {
             setIsLoading(false);
         }
-    }, [filters, offset]);
+    }, [filters, offset, t]);
 
     useEffect(() => {
         fetchLogs()

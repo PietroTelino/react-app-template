@@ -28,7 +28,9 @@ export function Sidebar() {
 
     function handleLanguageChange(e: React.ChangeEvent<HTMLSelectElement>) {
         const lang = e.target.value;
+        console.log('Mudando para:', lang);
         i18n.changeLanguage(lang);
+        console.log('Idioma atual após mudança:', i18n.language);
         localStorage.setItem('language', lang);
     }
 
@@ -70,7 +72,7 @@ export function Sidebar() {
                     '
                 >
                     <option value='pt-BR'>🇧🇷 Português</option>
-                    <option value='pt-BR'>🇺🇸 English</option>
+                    <option value='en'>🇺🇸 English</option>
                 </select>
             </div>
 

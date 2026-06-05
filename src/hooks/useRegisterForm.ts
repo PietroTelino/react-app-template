@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '@/api/users';
 import { useToast } from '@/contexts/ToastContext';
+import { useTranslation } from 'react-i18next';
 
 interface FormState {
     name: string;
@@ -18,6 +19,7 @@ interface FormErrors {
 }
 
 export function useRegisterForm() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { showToast } = useToast();
     const [form, setForm] = useState<FormState>({
@@ -41,27 +43,27 @@ export function useRegisterForm() {
         const newErrors: FormErrors = {};
 
         if (!form.name.trim()) {
-            newErrors.name = 'Nome é obrigatório';
+            newErrors.name = t('errors.required', { field: t('auth.register.name') });
         }
 
         if (!form.email.trim()) {
-            newErrors.email = 'E-mail é obrigatório';
+            newErrors.email = t('errors.required', { field: t('auth.register.email') });
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-            newErrors.email = 'E-mail inválido';
+            newErrors.email = t('errors.invalidEmail');
         }
 
         if (!form.password) {
-            newErrors.password = 'Senha é obrigatória';
+            newErrors.password = t('errors.required', { field: t('auth.register.password') });
         } else if (form.password.length < 8) {
-            newErrors.password = 'A senha deve ter no mínimo 8 caracteres';
+            newErrors.password = t('errors.passwordMinLength');
         } else if (!/[^a-zA-Z0-9]/.test(form.password)) {
-            newErrors.password = 'A senha deve conter pelo menos 1 caractere especial';
+            newErrors.password = t('errors.passwordSpecialChar');
         }
 
         if (!form.confirmPassword) {
-            newErrors.confirmPassword = 'Confirmação de senha é obrigatória';
+            newErrors.confirmPassword = t('errors.required', { field: t('auth.register.confirmPassword') });
         } else if (form.password !== form.confirmPassword) {
-            newErrors.confirmPassword = 'As senhas não coincidem';
+            newErrors.confirmPassword = t('errors.passwordsMismatch');
         }
 
         setErrors(newErrors);
@@ -79,10 +81,10 @@ export function useRegisterForm() {
                 email: form.email,
                 password: form.password,
             });
-            showToast('Conta criada com sucesso!', 'success');
+            showToast(t('auth.register.success'), 'success');
             navigate('/login');
         } catch (error: any) {
-            const message = error?.response?.data?.message ?? 'Erro ao criar conta';
+            const message = error?.response?.data?.message ?? t('errors.genericError');
             showToast(message, 'error');
         } finally {
             setIsSubmitting(false);

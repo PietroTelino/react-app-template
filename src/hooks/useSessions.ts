@@ -24,7 +24,7 @@ export function useSessions() {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [t]);
 
     useEffect(() => {
         fetchSessions()

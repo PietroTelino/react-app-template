@@ -27,7 +27,7 @@ export function useDeletedUsers() {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [t]);
 
     useEffect(() => {
         fetchUsers()

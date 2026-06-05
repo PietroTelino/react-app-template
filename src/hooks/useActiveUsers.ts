@@ -28,7 +28,7 @@ export function useActiveUsers() {
         } finally {
             setIsLoading(false)
         }
-    }, []);
+    }, [t]);
 
     useEffect(() => {
         fetchUsers()
