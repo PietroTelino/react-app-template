@@ -12,7 +12,7 @@ api.interceptors.request.use((config) => {
         config.headers.Authorization = `Bearer ${token}`;
     }
 
-    config.headers['Accept-Language'] = i18n.language;
+    config.headers['accept-language'] = i18n.language;
 
     return config;
 });
@@ -40,7 +40,11 @@ api.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        const isAuthRoute =
+            originalRequest.url?.includes('/auth/login') ||
+            originalRequest.url?.includes('/auth/refresh');
+
+        if (error.response?.status === 401 && !originalRequest._retry && !isAuthRoute) {
             if (isRefreshing) {
                 return new Promise((resolve, reject) => {
                     failedQueue.push({ resolve, reject });

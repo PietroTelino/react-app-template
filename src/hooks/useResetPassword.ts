@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { resetPassword } from '@/api/users';
 import { useToast } from '@/contexts/ToastContext';
+import { useTranslation } from 'react-i18next';
 
 interface FormState {
     password: string;
@@ -14,6 +15,7 @@ interface FormErrors {
 }
 
 export function useResetPassword() {
+    const { t } = useTranslation();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const { showToast } = useToast();
@@ -37,17 +39,17 @@ export function useResetPassword() {
         const newErrors: FormErrors = {};
 
         if (!form.password) {
-            newErrors.password = 'Nova senha é obrigatória';
+            newErrors.password = t('errors.required', { field: t('auth.resetPassword.password') });
         } else if (form.password.length < 8) {
-            newErrors.password = 'A senha deve ter no mínimo 8 caracteres';
+            newErrors.password = t('errors.passwordMinLength');
         } else if (!/[^a-zA-Z0-9]/.test(form.password)) {
-            newErrors.password = 'A senha deve conter pelo menos 1 caractere especial';
+            newErrors.password = t('errors.passwordSpecialChar');
         }
 
         if (!form.confirmPassword) {
-           newErrors.confirmPassword = 'Confirmação de senha é obrigatória';
+           newErrors.confirmPassword = t('errors.required', { field: t('auth.resetPassword.confirmPassword') });
         } else if (form.password !== form.confirmPassword) {
-            newErrors.confirmPassword = 'As senhas não coincidem';
+            newErrors.confirmPassword = t('errors.passwordsMismatch');
         }
 
         setErrors(newErrors);
@@ -59,17 +61,17 @@ export function useResetPassword() {
         if (!validate()) return;
 
         if (!token) {
-            showToast('Token inválido ou ausente', 'error');
+            showToast(t('error.invalidToken'), 'error');
             return;
         }
 
         setIsSubmitting(true);
         try {
             await resetPassword(token, form.password);
-            showToast('Senha redefinida com sucesso!', 'success');
+            showToast(t('auth.resetPassword.success'), 'success');
             navigate('/login');
         } catch (error: any) {
-            const message = error?.response?.data?.message ?? 'Erro ao redefinir senha';
+            const message = error?.response?.data?.message ?? t('error.genericError');
             showToast(message, 'error');
         } finally {
             setIsSubmitting(false);

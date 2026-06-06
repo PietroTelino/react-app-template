@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 interface FormState {
     email: string;
@@ -14,6 +15,7 @@ interface FormErrors {
 }
 
 export function useLoginForm() {
+    const { t } = useTranslation();
     const { login } = useAuth();
     const navigate = useNavigate();
 
@@ -37,13 +39,13 @@ export function useLoginForm() {
         const password = form.password ?? '';
 
         if (!email.trim()) {
-            newErrors.email = 'E-mail é obrigatório';
+            newErrors.email = t('errors.required', { field: t('auth.login.email') });
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-            newErrors.email = 'E-mail inválido';
+            newErrors.email = t('errors.invalidEmail');            
         }
 
         if (!password) {
-            newErrors.password = 'Senha é obrigatória';
+            newErrors.password = t('errors.required', { field: t('auth.login.password') });
         }
 
         setErrors(newErrors);
